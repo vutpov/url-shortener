@@ -5,7 +5,6 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSet,
 } from "@/components/ui/field";
 import { useForm, SubmitHandler } from "react-hook-form";
