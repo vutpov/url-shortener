@@ -65,7 +65,7 @@ export default function Home() {
                 {...register("longUrl", { required: true })}
               />
               <FieldDescription className="text-sm flex">
-                <div>Enter the URL you want to shorten.</div>
+                <>Enter the URL you want to shorten.</>
               </FieldDescription>
               {errors.longUrl && (
                 <span className="text-red-500">{errors.longUrl.message}</span>

@@ -1,5 +1,5 @@
 import { UrlShortenObject } from "@/types/url-object";
-import { getUrl, setUrl } from "@/utils/url-store";
+import { getUrl, setUrl } from "@/lib/url-store";
 
 type ResponseData = {
   message: string;
