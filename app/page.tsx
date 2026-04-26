@@ -1,5 +1,5 @@
 "use client";
-
+import QRCode from "qrcode";
 import {
   Field,
   FieldDescription,
@@ -11,7 +11,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { generateShortUrl } from "./actions";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UrlShortenObject } from "@/types/url-object";
@@ -39,6 +39,15 @@ export default function Home() {
     message: string;
     data: UrlShortenObject;
   } | null>(null);
+
+  useEffect(() => {
+    if (result) {
+      QRCode.toCanvas(
+        document.getElementById("qrcode") as HTMLCanvasElement,
+        `${window.location.origin}/${result.data.shortUrl}`,
+      );
+    }
+  }, [result]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     startTransition(async () => {
@@ -87,6 +96,30 @@ export default function Home() {
               >
                 {`${window.location.origin}/${result.data.shortUrl}`}
               </a>
+              <div className="mt-2 flex flex-col items-center">
+                <canvas id="qrcode" className="block"></canvas>
+
+                <Button
+                  variant="outline"
+                  className="mt-2"
+                  onClick={() => {
+                    const canvas = document.getElementById(
+                      "qrcode",
+                    ) as HTMLCanvasElement;
+                    const pngUrl = canvas
+                      .toDataURL("image/png")
+                      .replace("image/png", "image/octet-stream");
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = pngUrl;
+                    downloadLink.download = `${result.data.shortUrl}.png`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                  }}
+                >
+                  Download QR Code
+                </Button>
+              </div>
             </div>
           )}
         </FieldSet>

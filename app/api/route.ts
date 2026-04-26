@@ -51,7 +51,7 @@ export async function POST(req: Request) {
   const shortUrl = Math.random().toString(36).substring(2, 8);
   const urlObject = await setUrl(shortUrl, longUrl);
   const result: ResponseData = {
-    message: "Short URL generated successfully",
+    message: "Short URL generated successfully. It will expire in 24 hours.",
     data: urlObject,
   };
   return new Response(JSON.stringify(result), {
